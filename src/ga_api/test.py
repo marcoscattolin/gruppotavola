@@ -1,4 +1,4 @@
-#Read data file from URI of secondary Azure Data Lake Storage Gen2
+# Read data file from URI of secondary Azure Data Lake Storage Gen2
 import pandas as pd
 import json
 
