@@ -105,6 +105,7 @@ def make_dataframe(response):
 
 def write_data(df_in):
     print("Writing to azure...")
+
     # get azure access credentials
     with open("../../secrets/azure_creds.json", "r") as f:
         storage_options = json.load(f)
