@@ -4,7 +4,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 import pandas as pd
 import os
 import json
-
+import datetime
 
 SCOPES = ['https://www.googleapis.com/auth/analytics.readonly']
 KEY_FILE_LOCATION = '../../secrets/googleapi-b7fa7534555d.json'
@@ -106,7 +106,6 @@ def make_dataframe(response):
 
 def write_data(df_in):
 
-    print("Writing to azure...")
     # get azure access credentials
     with open("../../secrets/azure_creds.json", "r") as f:
         storage_options = json.load(f)
@@ -118,6 +117,7 @@ def write_data(df_in):
     container = "staging"
     account_name = "gruppotavolastorage"
 
+    print(f"Writing {filename} to azure...")
     df_in.to_csv(
         f"abfs://{container}@{account_name}.dfs.core.windows.net/{file_path}",
         index=False,
@@ -131,9 +131,21 @@ def main(date_string='yesterday'):
     analytics = initialize_analyticsreporting()
     response = get_report(analytics, date_string=date_string)
     df = make_dataframe(response)
-    write_data(df)
-
+    if df.shape[0] == 0:
+        print(f"Skipping writing for {date_string}")
+    else:
+        print(f"Writing data for {date_string}")
+        write_data(df)
 
 
 if __name__ == '__main__':
-    main()
+    dates = pd.date_range(
+        start=datetime.date(2022, 9, 6),
+        end=datetime.date(2022, 10, 30)
+    )
+
+    dates = list(dates)
+    dates = [x.strftime("%Y-%m-%d") for x in dates]
+
+    for d in dates:
+        main(d)
