@@ -2,6 +2,9 @@
 from googleapiclient.discovery import build
 from oauth2client.service_account import ServiceAccountCredentials
 import pandas as pd
+import os
+import json
+
 
 SCOPES = ['https://www.googleapis.com/auth/analytics.readonly']
 KEY_FILE_LOCATION = '../../secrets/googleapi-b7fa7534555d.json'
@@ -101,11 +104,35 @@ def make_dataframe(response):
     return df
 
 
+def write_data(df_in):
+
+    print("Writing to azure...")
+    # get azure access credentials
+    with open("../../secrets/azure_creds.json", "r") as f:
+        storage_options = json.load(f)
+
+    # file details
+    datestr = df_in["date"].iloc[0]
+    filename = f"googleanalytics_{datestr}.csv"
+    file_path = os.path.join("googleanalytics", filename)
+    container = "staging"
+    account_name = "gruppotavolastorage"
+
+    df_in.to_csv(
+        f"abfs://{container}@{account_name}.dfs.core.windows.net/{file_path}",
+        index=False,
+        storage_options=storage_options
+    )
+
+    print("Done!")
+
+
 def main(date_string='yesterday'):
     analytics = initialize_analyticsreporting()
     response = get_report(analytics, date_string=date_string)
     df = make_dataframe(response)
-    print(df.head())
+    write_data(df)
+
 
 
 if __name__ == '__main__':

@@ -2,7 +2,8 @@
 import pandas as pd
 import json
 
-
+with open("../../secrets/azure_creds.json", "r") as f:
+    storage_options = json.load(f)
 
 # file details
 container = "staging"
@@ -13,3 +14,4 @@ df = pd.read_csv(
     f"abfs://{container}@{account_name}.dfs.core.windows.net/{file_path}",
     storage_options=storage_options
 )
+print(df.head())
