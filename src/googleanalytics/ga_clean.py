@@ -5,7 +5,7 @@ from grptavutils.constants import Fields, Storage
 
 def read_bronze():
     try:
-        df = read_parquet("bronze", "googleanalytics/googleanalytics.parquet")
+        df = read_parquet(Storage.bronze, Storage.bronze_ga)
         return df
 
     except FileNotFoundError:
@@ -32,14 +32,19 @@ def read_staging():
         df = pd.concat([df, current_df])
 
     # rename columns
-    df = df.rename(columns={
-        "filename": Fields.filename,
+    ren_cols = {
+        Fields.filename: Fields.filename,
         "date": Fields.date,
         "source": Fields.ga_source,
         "channelGrouping": Fields.ga_channel_grouping,
         "sessions": Fields.ga_sessions,
         "users": Fields.ga_users,
-    })
+    }
+    df = df.rename(columns=ren_cols)
+
+    # select
+    sel = list(ren_cols.values())
+    df = df[sel]
 
     # data types
     df[Fields.date] = pd.to_datetime(df[Fields.date], format="%Y%m%d")
