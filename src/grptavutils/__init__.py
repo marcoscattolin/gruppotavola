@@ -1,6 +1,7 @@
 import json
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
 import pandas as pd
+from grptavutils.constants import Storage
 
 
 def list_blob_files(container_name, blob_path):
@@ -41,7 +42,7 @@ def read_parquet(container, file_path):
     with open("../../secrets/azure_creds.json", "r") as f:
         storage_options = json.load(f)
 
-    account_name = "gruppotavolastorage"
+    account_name = Storage.account_name
     df = pd.read_parquet(
         f"abfs://{container}@{account_name}.dfs.core.windows.net/{file_path}",
         storage_options=storage_options
@@ -56,7 +57,7 @@ def read_csv(container, file_path):
     with open("../../secrets/azure_creds.json", "r") as f:
         storage_options = json.load(f)
 
-    account_name = "gruppotavolastorage"
+    account_name = Storage.account_name
     df = pd.read_csv(
         f"abfs://{container}@{account_name}.dfs.core.windows.net/{file_path}",
         storage_options=storage_options
@@ -71,7 +72,7 @@ def write_parquet(dataframe, container, file_path):
     with open("../../secrets/azure_creds.json", "r") as f:
         storage_options = json.load(f)
 
-    account_name = "gruppotavolastorage"
+    account_name = Storage.account_name
 
     dataframe.to_parquet(
         f"abfs://{container}@{account_name}.dfs.core.windows.net/{file_path}",

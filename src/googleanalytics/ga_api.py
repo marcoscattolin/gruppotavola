@@ -4,6 +4,8 @@ from oauth2client.service_account import ServiceAccountCredentials
 import pandas as pd
 import os
 import json
+from grptavutils import Storage
+
 
 SCOPES = ["https://www.googleapis.com/auth/analytics.readonly"]
 KEY_FILE_LOCATION = "../../secrets/googleapi-b7fa7534555d.json"
@@ -114,8 +116,8 @@ def write_data(df_in):
     datestr = df_in["date"].iloc[0]
     filename = f"googleanalytics_{datestr}.csv"
     file_path = os.path.join("googleanalytics", filename)
-    container = "staging"
-    account_name = "gruppotavolastorage"
+    container = Storage.staging
+    account_name = Storage.account_name
 
     df_in.to_csv(
         f"abfs://{container}@{account_name}.dfs.core.windows.net/{file_path}",

@@ -1,5 +1,6 @@
 import pandas as pd
 from grptavutils import list_blob_files, read_parquet, read_csv, write_parquet, delete_blob_file
+from grptavutils.constants import Fields, Storage
 
 
 def read_bronze():
@@ -9,12 +10,12 @@ def read_bronze():
 
     except FileNotFoundError:
         empty_df = pd.DataFrame(columns=[
-            "filename",
-            "date",
-            "ga_source",
-            "ga_channel_grouping",
-            "ga_sessions",
-            "ga_users",
+            Fields.filename,
+            Fields.date,
+            Fields.ga_source,
+            Fields.ga_channel_grouping,
+            Fields.ga_sessions,
+            Fields.ga_users,
         ])
 
         return empty_df
@@ -26,37 +27,37 @@ def read_staging():
     # iterate over files
     df = pd.DataFrame()
     for f in files:
-        current_df = read_csv("staging", f)
-        current_df.loc[:, "filename"] = f
+        current_df = read_csv(container=Storage.staging, file_path=f)
+        current_df.loc[:, Fields.filename] = f
         df = pd.concat([df, current_df])
 
     # rename columns
     df = df.rename(columns={
-        "filename": "filename",
-        "date": "date",
-        "source": "ga_source",
-        "channelGrouping": "ga_channel_grouping",
-        "sessions": "ga_sessions",
-        "users": "ga_users",
+        "filename": Fields.filename,
+        "date": Fields.date,
+        "source": Fields.ga_source,
+        "channelGrouping": Fields.ga_channel_grouping,
+        "sessions": Fields.ga_sessions,
+        "users": Fields.ga_users,
     })
 
     # data types
-    df["date"] = pd.to_datetime(df["date"], format="%Y%m%d")
-    df["ga_sessions"] = df["ga_sessions"].astype("int", errors="ignore")
-    df["ga_users"] = df["ga_users"].astype("int", errors="ignore")
+    df[Fields.date] = pd.to_datetime(df[Fields.date], format="%Y%m%d")
+    df[Fields.ga_sessions] = df[Fields.ga_sessions].astype("int", errors="ignore")
+    df[Fields.ga_users] = df[Fields.ga_users].astype("int", errors="ignore")
 
     # fill missing
-    df["ga_source"] = df["ga_source"].fillna("_missing_")
-    df["ga_channel_grouping"] = df["ga_channel_grouping"].fillna("_missing_")
-    df["ga_sessions"] = df["ga_sessions"].fillna(0)
-    df["ga_users"] = df["ga_users"].fillna(0)
+    df[Fields.ga_source] = df[Fields.ga_source].fillna(Fields.missing)
+    df[Fields.ga_channel_grouping] = df[Fields.ga_channel_grouping].fillna(Fields.missing)
+    df[Fields.ga_sessions] = df[Fields.ga_sessions].fillna(0)
+    df[Fields.ga_users] = df[Fields.ga_users].fillna(0)
 
     return df
 
 
 def trunc_staging(bronze_df, staging_df):
-    dates = bronze_df["date"].unique()
-    mask = staging_df["date"].isin(dates)
+    dates = bronze_df[Fields.date].unique()
+    mask = staging_df[Fields.date].isin(dates)
     trunc_df = staging_df[~mask]
 
     return trunc_df
@@ -75,22 +76,22 @@ def main():
     # append to bronze
     df = pd.concat([
         bronze_df,
-        trunc_df.drop(columns="filename")
+        trunc_df.drop(columns=Fields.filename)
     ])
 
     # write
     write_parquet(
         dataframe=df,
-        container="bronze",
-        file_path="googleanalytics/googleanalytics.parquet",
+        container=Storage.bronze,
+        file_path=Storage.bronze_ga,
     )
 
     # delete files from blob
-    delete_files = list(trunc_df["filename"].unique())
+    delete_files = list(trunc_df[Fields.filename].unique())
 
     # delete file
     for f in delete_files:
-        delete_blob_file(container_name="bronze", file_path="googleanalytics/googleanalytics.parquet")
+        delete_blob_file(container_name=Storage.bronze, file_path=Storage.bronze_ga)
         print(f"Deleted {f}")
 
 
