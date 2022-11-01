@@ -51,7 +51,7 @@ def read_parquet(container, file_path):
     return df
 
 
-def read_csv(container, file_path):
+def read_csv(container, file_path, sep=",", decimal="."):
 
     # get azure access credentials
     with open("../../secrets/azure_creds.json", "r") as f:
@@ -60,6 +60,8 @@ def read_csv(container, file_path):
     account_name = Storage.account_name
     df = pd.read_csv(
         f"abfs://{container}@{account_name}.dfs.core.windows.net/{file_path}",
+        sep=sep,
+        decimal=decimal,
         storage_options=storage_options
     )
 
