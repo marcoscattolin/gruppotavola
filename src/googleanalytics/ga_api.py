@@ -5,6 +5,8 @@ import pandas as pd
 import os
 import json
 import datetime
+from grptavutils.constants import Storage
+
 
 SCOPES = ["https://www.googleapis.com/auth/analytics.readonly"]
 KEY_FILE_LOCATION = "../../secrets/googleapi-b7fa7534555d.json"
@@ -114,8 +116,8 @@ def write_data(df_in):
     datestr = df_in["date"].iloc[0]
     filename = f"googleanalytics_{datestr}.csv"
     file_path = os.path.join("googleanalytics", filename)
-    container = "staging"
-    account_name = "gruppotavolastorage"
+    container = Storage.staging
+    account_name = Storage.account_name
 
     print(f"Writing {filename} to azure...")
     df_in.to_csv(
