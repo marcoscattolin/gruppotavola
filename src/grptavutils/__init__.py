@@ -81,3 +81,11 @@ def write_parquet(dataframe, container, file_path):
         index=False,
         storage_options=storage_options
     )
+
+
+def delete_staging_files(files):
+
+    for f in files:
+        delete_blob_file(container_name=Storage.staging, file_path=f)
+        print(f"Deleted {f}")
+

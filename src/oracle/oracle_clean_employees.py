@@ -1,6 +1,5 @@
 import pandas as pd
-from grptavutils import list_blob_files, read_parquet, read_csv, write_parquet, delete_blob_file
-from grptavutils.constants import Fields, Storage
+from grptavutils import list_blob_files, read_parquet, read_csv, write_parquet, delete_blob_file, delete_staging_files
 
 
 def read_bronze():
@@ -120,6 +119,8 @@ def trunc_staging(bronze_df, staging_df):
     return trunc_df
 
 
+
+
 def main():
 
     # read bronze
@@ -145,12 +146,8 @@ def main():
     )
 
     # delete files from blob
-    delete_files = list(trunc_df[Fields.filename].unique())
-
-    # delete file
-    #for f in delete_files:
-    #    delete_blob_file(container_name=Storage.bronze, file_path=Storage.bronze_ga)
-    #    print(f"Deleted {f}")
+    files = list(staging_df[Fields.filename].unique())
+    delete_staging_files(files)
 
 
 if __name__ == "__main__":
