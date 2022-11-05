@@ -83,6 +83,7 @@ def read_staging():
         "transferStatusCode": Fields.ora_transfer_status_code,
         "transferStatus": Fields.ora_transfer_status,
         "orderTypeName": Fields.ora_order_type_name,
+        "employeeID": Fields.ora_guest_employee_id,
         "employeeFirstName": Fields.ora_guest_employee_first_name,
         "employeeLastName": Fields.ora_guest_employee_last_name,
         "tableReference": Fields.ora_table_reference,
@@ -98,7 +99,7 @@ def read_staging():
     df[Fields.ora_check_close_datetime] = pd.to_datetime(df[Fields.ora_check_close_datetime], format="%Y-%m-%dT%H:%M:%S")
     df[Fields.ora_check_open_datetime] = pd.to_datetime(df[Fields.ora_check_open_datetime], format="%Y-%m-%dT%H:%M:%S")
     df[Fields.ora_guest_check_id] = df[Fields.ora_guest_check_id].astype("int", errors="ignore")
-    df[Fields.ora_employee_id] = df[Fields.ora_employee_id].astype("int", errors="ignore")
+    df[Fields.ora_guest_employee_id] = df[Fields.ora_guest_employee_id].astype("int", errors="ignore")
     df[Fields.ora_rev_center_id] = df[Fields.ora_rev_center_id].astype("int", errors="ignore")
     df[Fields.ora_location_id] = df[Fields.ora_location_id].astype("int", errors="ignore")
     df[Fields.ora_order_type_id] = df[Fields.ora_order_type_id].astype("int", errors="ignore")

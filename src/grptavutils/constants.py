@@ -45,8 +45,9 @@ class Fields:
     ora_service_charge = "service_charge"
     ora_check_sub_total = "check_sub_total"
     ora_order_type_name = "order_type_name"
-    ora_guest_employee_first_name = "guest_employee_first_name"
-    ora_guest_employee_last_name = "guest_employee_last_name"
+    ora_guest_employee_id = ora_employee_id
+    ora_guest_employee_first_name = ora_employee_first_name
+    ora_guest_employee_last_name = ora_employee_last_name
     ora_check_duration = "check_duration"
     ora_table_reference = "table_reference"
     ora_check_tot_items = "check_tot_items"
@@ -60,9 +61,12 @@ class Storage:
     # container names
     staging = "staging"
     bronze = "bronze"
+    silver = "silver"
     account_name = "gruppotavolastorage"
 
     # filepaths
     bronze_ga = "googleanalytics/googleanalytics.parquet"
     bronze_oracle_employees = "oracle/employees.parquet"
     bronze_oracle_guests = "oracle/guests.parquet"
+    silver_dates = "dates/dates.parquet"
+    silver_employee = "employees/employees.parquet"
