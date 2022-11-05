@@ -69,4 +69,4 @@ class Storage:
     bronze_oracle_employees = "oracle/employees.parquet"
     bronze_oracle_guests = "oracle/guests.parquet"
     silver_dates = "dates/dates.parquet"
-    silver_employee = "employees/employees.parquet"
+    silver_employees = "employees/employees.parquet"

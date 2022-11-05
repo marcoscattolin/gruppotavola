@@ -186,7 +186,7 @@ def main():
 
     # delete files from blob
     files = list(staging_df[Fields.filename].unique())
-    delete_staging_files(files)
+    #delete_staging_files(files)
 
 
 if __name__ == "__main__":

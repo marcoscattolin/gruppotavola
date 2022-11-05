@@ -21,24 +21,24 @@ def read_files():
 
 def combine_dates(datasets):
 
-    for ix, d in enumerate(datasets):
-        datasets[ix] = datasets[ix][[Fields.date]]
-
     dates = pd.concat(datasets)
+    dates = dates[[Fields.date]]
     dates = dates.drop_duplicates()
 
     return dates
 
 def combine_employees(datasets):
-    for ix, d in enumerate(datasets):
-        sel = [Fields.ora_employee_id, Fields.ora_employee_last_name, Fields.ora_employee_last_name]
-        datasets[ix] = datasets[ix][sel]
 
-    employees = pd.concat(datasets)
-    employees = employees.drop_duplicates(subset=[Fields.ora_employee_id])
+    employees_datasets = []
+    for d in datasets:
+        if Fields.ora_employee_id in d.columns:
+            employees_datasets.append(d)
 
-    return employees
+    employees_df = pd.concat(employees_datasets)
+    employees_df = employees_df[[Fields.ora_employee_id, Fields.ora_employee_first_name, Fields.ora_employee_last_name]]
+    employees_df = employees_df.drop_duplicates(subset=[Fields.ora_employee_id])
 
+    return employees_df
 
 
 def main():
@@ -56,13 +56,14 @@ def main():
         file_path=Storage.silver_dates,
     )
 
+    # combine dates
+    employees_df = combine_employees(datasets)
+
     write_parquet(
-        dataframe=dates_df,
+        dataframe=employees_df,
         container=Storage.silver,
         file_path=Storage.silver_employees,
     )
-
-    print("here")
 
 
 if __name__ == "__main__":
