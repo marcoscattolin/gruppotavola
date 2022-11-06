@@ -6,7 +6,7 @@ import os
 import json
 import datetime
 from grptavutils.constants import Storage
-
+from grptavutils.logs import logger
 
 SCOPES = ["https://www.googleapis.com/auth/analytics.readonly"]
 KEY_FILE_LOCATION = "../../secrets/googleapi-b7fa7534555d.json"
@@ -119,14 +119,14 @@ def write_data(df_in):
     container = Storage.staging
     account_name = Storage.account_name
 
-    print(f"Writing {filename} to azure...")
+    logger.info(f"Writing {filename} to azure...")
     df_in.to_csv(
         f"abfs://{container}@{account_name}.dfs.core.windows.net/{file_path}",
         index=False,
         storage_options=storage_options
     )
 
-    print("Done!")
+    logger.info("Done!")
 
 
 def main(date_string="yesterday"):
@@ -134,9 +134,9 @@ def main(date_string="yesterday"):
     response = get_report(analytics, date_string=date_string)
     df = make_dataframe(response)
     if df.shape[0] == 0:
-        print(f"Skipping writing for {date_string}")
+        logger.info(f"Skipping writing for {date_string}")
     else:
-        print(f"Writing data for {date_string}")
+        logger.info(f"Writing data for {date_string}")
         write_data(df)
 
 

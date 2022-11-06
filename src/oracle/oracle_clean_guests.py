@@ -1,7 +1,7 @@
 import pandas as pd
 from grptavutils import list_blob_files, read_parquet, read_csv, write_parquet, delete_blob_file, delete_staging_files
 from grptavutils.constants import Fields, Storage
-
+from grptavutils.logs import logger
 
 def read_bronze():
     try:

@@ -2,6 +2,7 @@ import pandas as pd
 
 from grptavutils.constants import Fields, Storage
 from grptavutils import read_parquet, write_parquet
+from grptavutils.logs import logger
 
 
 def read_files():

@@ -5,7 +5,7 @@ import pandas as pd
 import os
 import json
 from grptavutils import Storage
-
+from grptavutils.logs import logger
 
 SCOPES = ["https://www.googleapis.com/auth/analytics.readonly"]
 KEY_FILE_LOCATION = "../../secrets/googleapi-b7fa7534555d.json"
@@ -106,7 +106,7 @@ def make_dataframe(response):
 
 
 def write_data(df_in):
-    print("Writing to azure...")
+    logger.info("Writing to azure...")
 
     # get azure access credentials
     with open("../../secrets/azure_creds.json", "r") as f:
@@ -125,7 +125,7 @@ def write_data(df_in):
         storage_options=storage_options
     )
 
-    print("Done!")
+    logger.info(f"Done! Saved file {file_path}")
 
 
 def main(date_string="yesterday"):

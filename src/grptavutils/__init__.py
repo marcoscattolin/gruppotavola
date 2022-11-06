@@ -2,7 +2,7 @@ import json
 from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
 import pandas as pd
 from grptavutils.constants import Storage
-
+from grptavutils.logs import logger
 
 def list_blob_files(container_name, blob_path):
 
@@ -81,11 +81,12 @@ def write_parquet(dataframe, container, file_path):
         index=False,
         storage_options=storage_options
     )
+    logger.info(f"Saved file {file_path} into container {container}")
 
 
 def delete_staging_files(files):
 
     for f in files:
         delete_blob_file(container_name=Storage.staging, file_path=f)
-        print(f"Deleted {f}")
+        logger.info(f"Deleted file {f} from container {Storage.staging}")
 
