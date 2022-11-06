@@ -5,6 +5,10 @@ class Fields:
     # generic
     filename = "filename"
     date = "date"
+    execution_time = "execution_time"
+    relative_days = "relative_days"
+    relative_weeks = "relative_weeks"
+    day_of_week = "day_of_week"
 
     # google analytics
     ga_source = "ga_source"

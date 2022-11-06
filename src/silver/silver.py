@@ -1,8 +1,11 @@
+import datetime
+
 import pandas as pd
+import numpy as np
 
 from grptavutils.constants import Fields, Storage
 from grptavutils import read_parquet, write_parquet
-from grptavutils.logs import logger
+
 
 
 def read_files():
@@ -24,6 +27,10 @@ def combine_dates(datasets):
     dates = pd.concat(datasets)
     dates = dates[[Fields.date]]
     dates = dates.drop_duplicates()
+    dates[Fields.execution_time] = datetime.datetime.now()
+    dates[Fields.relative_days] = (dates[Fields.execution_time] - dates[Fields.date]) // np.timedelta64(1, "D")
+    dates[Fields.relative_weeks] = (dates[Fields.execution_time] - dates[Fields.date]) // np.timedelta64(1, "W")
+    dates[Fields.day_of_week] = dates[Fields.date].dt.weekday + 1
 
     return dates
 
