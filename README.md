@@ -25,3 +25,8 @@ Set crontab jobs
 ```
 crontab /home/gruppotavola/gruppotavola/cronjobs.txt
 ```
+
+Inspect cron executions
+```
+grep -i cron /var/log/syslog
+```
