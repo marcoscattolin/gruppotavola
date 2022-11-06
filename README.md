@@ -23,5 +23,5 @@ export PYTHONPATH=/home/gruppotavola/gruppotavola/src
 
 Set crontab jobs
 ```
-crontab /home/gruppotavola/gruppotavola/mycronjobs.txt
+crontab /home/gruppotavola/gruppotavola/cronjobs.txt
 ```
