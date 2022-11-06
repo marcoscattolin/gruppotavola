@@ -15,11 +15,11 @@ class Fields:
     # oracle employees
     ora_location_id = "location_id"
     ora_rev_center_id = "revenue_center_id"
-    ora_employee_id = "employee_id"
-    ora_menu_item_id = "menu_item_id"
     ora_ora_rev_center_name = "revenue_center_name"
+    ora_employee_id = "employee_id"
     ora_employee_first_name = "employee_first_name"
     ora_employee_last_name = "employee_last_name"
+    ora_menu_item_id = "menu_item_id"
     ora_menu_item_name = "menu_item_name"
     ora_menu_item_master_name = "menu_item_master_name"
     ora_major_group_name = "major_group_name"
@@ -70,3 +70,4 @@ class Storage:
     bronze_oracle_guests = "oracle/guests.parquet"
     silver_dates = "dates/dates.parquet"
     silver_employees = "employees/employees.parquet"
+    silver_items = "items/items.parquet"
