@@ -16,6 +16,9 @@ Install requirements
 pip install -r requirements.txt
 ```
 
+Set PYTHONPATH env variable
 ```
 export PYTHONPATH=/home/gruppotavola/gruppotavola/src
 ```
+
+

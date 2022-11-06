@@ -1,0 +1,12 @@
+# launch google analytics api retrieval everyday at 6
+0 6 * * * /bin/python3 /home/gruppotavola/gruppotavola/src/googleanalytics/ga_api.py
+
+# launch google analytics data cleaning
+0 7 * * * /bin/python3 /home/gruppotavola/gruppotavola/src/googleanalytics/ga_clean.py
+
+# launch oracle data cleaning
+10 7 * * * /bin/python3 /home/gruppotavola/gruppotavola/src/oracle/oracle_clean_employees.py
+20 7 * * * /bin/python3 /home/gruppotavola/gruppotavola/src/oracle/oracle_clean_guests.py
+
+# silver ingestion
+30 7 * * * /bin/python3 /home/gruppotavola/gruppotavola/src/silver/silver.py
