@@ -9,7 +9,7 @@ from grptavutils.constants import Storage
 from grptavutils.logs import logger
 
 SCOPES = ["https://www.googleapis.com/auth/analytics.readonly"]
-KEY_FILE_LOCATION = "../../secrets/googleapi-b7fa7534555d.json"
+KEY_FILE_LOCATION = "../../secrets/gruppotavola-47872-de387bc63f40.json"
 VIEW_ID = "274858544"
 
 
