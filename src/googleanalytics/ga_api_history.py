@@ -142,8 +142,8 @@ def main(date_string="yesterday"):
 
 if __name__ == "__main__":
     dates = pd.date_range(
-        start=datetime.date(2022, 11, 4),
-        end=datetime.date(2022, 11, 9)
+        start=datetime.date(2022, 11, 7),
+        end=datetime.date(2022, 11, 12)
     )
 
     dates = list(dates)

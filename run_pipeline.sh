@@ -19,5 +19,5 @@ cd /home/gruppotavola/gruppotavola/src/oracle/
 python3 oracle_clean_guests.py
 
 # silver ingestion
-/home/gruppotavola/gruppotavola/src/silver/
+cd /home/gruppotavola/gruppotavola/src/silver/
 python3 silver.py
