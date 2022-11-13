@@ -5,7 +5,7 @@ export PYTHONPATH=/home/gruppotavola/gruppotavola/src
 
 # launch google analytics api retrieval everyday at 6.10
 cd /home/gruppotavola/gruppotavola/src/googleanalytics/
-ga_api.py
+python3 ga_api.py
 
 # launch google analytics data cleaning
 cd /home/gruppotavola/gruppotavola/src/googleanalytics/
