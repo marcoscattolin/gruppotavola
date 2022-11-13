@@ -1,0 +1,2 @@
+# to schedule: crontab cron_pipeline.txt
+0 7 * * * /home/gruppotavola/gruppotavola/run_pipeline.sh
