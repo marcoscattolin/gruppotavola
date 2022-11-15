@@ -1,5 +1,7 @@
 secrets/
 dashboard/
+data/
+notebooks/
 *.xlsx
 
 # Byte-compiled / optimized / DLL files
