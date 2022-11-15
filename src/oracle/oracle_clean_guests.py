@@ -159,6 +159,36 @@ def trunc_staging(bronze_df, staging_df):
 
     return trunc_df
 
+def day_period(df_in: pd.DataFrame) -> None:
+
+    df_in["period_of_day"] = df_in["check_close_datetime"].dt.hour.map({
+            0: "Cena",
+            1: "Cena",
+            2: "Cena",
+            3: "Cena",
+            4: "Cena",
+            5: "Cena",
+            6: "Cena",
+            7: "Pranzo",
+            8: "Pranzo",
+            9: "Pranzo",
+            10: "Pranzo",
+            11: "Pranzo",
+            12: "Pranzo",
+            13: "Pranzo",
+            14: "Pranzo",
+            15: "Pranzo",
+            16: "Pranzo",
+            17: "Pranzo",
+            18: "Cena",
+            19: "Cena",
+            20: "Cena",
+            21: "Cena",
+            22: "Cena",
+            23: "Cena",
+        })
+
+    return df_in
 
 def main():
 
@@ -176,6 +206,9 @@ def main():
         bronze_df,
         trunc_df.drop(columns=Fields.filename)
     ])
+
+    # make day period
+    day_period(df)
 
     # write
     write_parquet(
