@@ -3,9 +3,18 @@ from grptavutils import list_blob_files, read_parquet, read_csv, write_parquet, 
 from grptavutils.constants import Fields, Storage
 from grptavutils.logs import logger
 
+
 def read_bronze():
     try:
         df = read_parquet(Storage.bronze, Storage.bronze_oracle_employees)
+
+        # drop flags
+        for col in ["wine_weighted_flag", "bread_flag", "sides_flag", "appetizers_flag", "menu_flag"]:
+            try:
+                df.drop(columns=[col], inplace=True)
+            except KeyError:
+                continue
+
         return df
 
     except FileNotFoundError:
@@ -79,7 +88,8 @@ def read_staging():
     df[Fields.ora_menu_item_id] = df[Fields.ora_menu_item_id].astype("int", errors="ignore")
     df[Fields.ora_sales_total] = df[Fields.ora_sales_total].astype("double", errors="ignore")
     df[Fields.ora_sales_count] = df[Fields.ora_sales_count].astype("int", errors="ignore")
-    df[Fields.ora_sales_gross_before_discount] = df[Fields.ora_sales_gross_before_discount].astype("double", errors="ignore")
+    df[Fields.ora_sales_gross_before_discount] = df[Fields.ora_sales_gross_before_discount].astype("double",
+                                                                                                   errors="ignore")
     df[Fields.ora_discount_total] = df[Fields.ora_discount_total].astype("double", errors="ignore")
 
     # initcap
@@ -90,7 +100,6 @@ def read_staging():
     df[Fields.ora_menu_item_master_name] = df[Fields.ora_menu_item_master_name].str.capitalize()
     df[Fields.ora_major_group_name] = df[Fields.ora_major_group_name].str.capitalize()
     df[Fields.ora_family_group_name] = df[Fields.ora_family_group_name].str.capitalize()
-
 
     # fill missing
     df[Fields.ora_ora_rev_center_name] = df[Fields.ora_ora_rev_center_name].fillna(Fields.missing)
@@ -120,10 +129,94 @@ def trunc_staging(bronze_df, staging_df):
     return trunc_df
 
 
+def flag_wines(df_in: pd.DataFrame) -> pd.DataFrame:
+    # identify wines
+    mask = df_in["major_group_name"].str.lower().str.startswith("beverage") & (
+            df_in["family_group_name"].str.lower().str.startswith("vin") | df_in[
+        "family_group_name"].str.lower().str.startswith("bollicin")
+    )
+    wines_df = df_in.loc[mask, ["menu_item_id", "family_group_name"]]
+    wines_df = wines_df.drop_duplicates(subset="menu_item_id")
+
+    # identify glasses
+    glass_mask = (df_in["family_group_name"].str.lower().str.contains("calic"))
+
+    # make weight
+    wines_df["wine_weighted_flag"] = 1
+    wines_df.loc[glass_mask, "wine_weighted_flag"] = .25
+
+    wines_df.drop(columns="family_group_name", inplace=True)
+    df = df_in.merge(wines_df, on="menu_item_id", how="left")
+    df["wine_weighted_flag"] = df["wine_weighted_flag"].fillna(0)
+
+    return df
+
+
+def flag_bread(df_in: pd.DataFrame) -> pd.DataFrame:
+    # identify bread
+    mask = df_in["family_group_name"].str.lower() == "pane"
+    bread_df = df_in.loc[mask, ["menu_item_id"]]
+    bread_df = bread_df.drop_duplicates(subset="menu_item_id")
+
+    # make weight
+    bread_df["bread_flag"] = 1
+
+    # merge back
+    df = df_in.merge(bread_df, on="menu_item_id", how="left")
+    df["bread_flag"] = df["bread_flag"].fillna(0)
+
+    return df
+
+
+def flag_sides(df_in: pd.DataFrame) -> pd.DataFrame:
+    # identify sides
+    mask = df_in["family_group_name"].str.lower().str.startswith("contorni")
+    sides_df = df_in.loc[mask, ["menu_item_id"]]
+    sides_df = sides_df.drop_duplicates(subset="menu_item_id")
+
+    # make weight
+    sides_df["sides_flag"] = 1
+
+    # merge back
+    df = df_in.merge(sides_df, on="menu_item_id", how="left")
+    df["sides_flag"] = df["sides_flag"].fillna(0)
+
+    return df
+
+
+def flag_appetizers(df_in: pd.DataFrame) -> pd.DataFrame:
+    # identify appetizers
+    mask = df_in["family_group_name"].str.lower().str.startswith("aperitivi")
+    sides_df = df_in.loc[mask, ["menu_item_id"]]
+    sides_df = sides_df.drop_duplicates(subset="menu_item_id")
+
+    # make weight
+    sides_df["appetizers_flag"] = 1
+
+    # merge back
+    df = df_in.merge(sides_df, on="menu_item_id", how="left")
+    df["appetizers_flag"] = df["appetizers_flag"].fillna(0)
+
+    return df
+
+
+def flag_menus(df_in: pd.DataFrame) -> pd.DataFrame:
+    # identify menus
+    mask = df_in["menu_item_name"].str.lower().str.contains("menu guida")
+    sides_df = df_in.loc[mask, ["menu_item_id"]]
+    sides_df = sides_df.drop_duplicates(subset="menu_item_id")
+
+    # make weight
+    sides_df["menu_flag"] = 1
+
+    # merge back
+    df = df_in.merge(sides_df, on="menu_item_id", how="left")
+    df["menu_flag"] = df["menu_flag"].fillna(0)
+
+    return df
 
 
 def main():
-
     # read bronze
     bronze_df = read_bronze()
 
@@ -139,6 +232,13 @@ def main():
         trunc_df.drop(columns=Fields.filename)
     ])
 
+    # flag group of items
+    df = flag_appetizers(df)
+    df = flag_bread(df)
+    df = flag_sides(df)
+    df = flag_wines(df)
+    df = flag_menus(df)
+
     # write
     write_parquet(
         dataframe=df,
@@ -148,7 +248,7 @@ def main():
 
     # delete files from blob
     files = list(staging_df[Fields.filename].unique())
-    #delete_staging_files(files)
+    # delete_staging_files(files)
 
 
 if __name__ == "__main__":
