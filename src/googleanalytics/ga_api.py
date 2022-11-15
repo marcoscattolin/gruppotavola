@@ -6,7 +6,7 @@ import os
 import json
 from grptavutils import Storage
 from grptavutils.logs import logger
-
+import datetime
 
 SCOPES = ["https://www.googleapis.com/auth/analytics.readonly"]
 KEY_FILE_LOCATION = "../../secrets/gruppotavola-47872-de387bc63f40.json"
@@ -129,8 +129,12 @@ def write_data(df_in):
     logger.info(f"Done! Saved file {file_path}")
 
 
-def main(date_string="yesterday"):
+def main():
     analytics = initialize_analyticsreporting()
+
+    yesterday = datetime.date.today() - datetime.timedelta(days=1)
+    date_string = yesterday.strftime("%Y-%m-%d")
+
     response = get_report(analytics, date_string=date_string)
     df = make_dataframe(response)
     write_data(df)
