@@ -33,8 +33,8 @@ def combine_dates(datasets):
     dates[Fields.day_of_week] = dates[Fields.date].dt.weekday + 1
 
     # adjust offsets
-    dates[Fields.relative_days] = dates[Fields.relative_days] - 1
-    dates[Fields.relative_weeks] = dates[Fields.relative_weeks] - 1
+    dates[Fields.relative_days] = dates[Fields.relative_days] + 1
+    dates[Fields.relative_weeks] = dates[Fields.relative_weeks] + 1
 
 
     return dates
