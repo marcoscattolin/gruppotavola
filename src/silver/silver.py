@@ -24,13 +24,22 @@ def read_files():
 
 
 def combine_dates(datasets):
+
     dates = pd.concat(datasets)
     dates = dates[[Fields.date]]
     dates = dates.drop_duplicates()
+
+    # make auxiliary columns
     dates[Fields.execution_time] = datetime.datetime.now()
     dates[Fields.relative_days] = (dates[Fields.date] - dates[Fields.execution_time]) // np.timedelta64(1, "D")
     dates[Fields.relative_weeks] = (dates[Fields.date] - dates[Fields.execution_time]) // np.timedelta64(1, "W")
     dates[Fields.day_of_week] = dates[Fields.date].dt.weekday + 1
+
+    max_actual_date = dates.loc[dates[Fields.relative_weeks] < 0, Fields.date].max()
+
+    dates[Fields.relative_cycle_28] = -((max_actual_date - dates[Fields.date]) // np.timedelta64(1, "D") % 28)
+    dates[Fields.relative_cycle_7] = -((max_actual_date - dates[Fields.date]) // np.timedelta64(1, "D") % 7)
+
 
     # adjust offsets
     dates[Fields.relative_days] = dates[Fields.relative_days] + 1

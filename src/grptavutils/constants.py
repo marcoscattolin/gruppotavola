@@ -60,6 +60,10 @@ class Fields:
 
     missing = "_missing_"
 
+    relative_cycle_28 = "relative_cycle_28"
+    relative_cycle_7 = "relative_cycle_7"
+
+
 class Storage:
 
     # container names
