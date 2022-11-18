@@ -32,8 +32,8 @@ def combine_dates(datasets):
     # make auxiliary columns
     dates[Fields.execution_time] = datetime.datetime.now()
     dates[Fields.relative_days] = (dates[Fields.date] - dates[Fields.execution_time]) // np.timedelta64(1, "D")
-    dates[Fields.relative_weeks] = (dates[Fields.date] - dates[Fields.execution_time]) // np.timedelta64(1, "W")
     dates[Fields.day_of_week] = dates[Fields.date].dt.weekday + 1
+    dates[Fields.relative_weeks] = ((dates[Fields.relative_days] - dates[Fields.day_of_week]) // 7)
 
     max_actual_date = dates.loc[dates[Fields.relative_weeks] < 0, Fields.date].max()
 
