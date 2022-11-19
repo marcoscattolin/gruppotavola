@@ -63,6 +63,7 @@ class Fields:
     relative_cycle_28 = "relative_cycle_28"
     relative_cycle_7 = "relative_cycle_7"
 
+    fcst_observation = "data_point_class"
 
 class Storage:
 
@@ -79,3 +80,4 @@ class Storage:
     silver_dates = "dates/dates.parquet"
     silver_employees = "employees/employees.parquet"
     silver_items = "items/items.parquet"
+    bronze_forecast = "forecast/forecast.parquet"

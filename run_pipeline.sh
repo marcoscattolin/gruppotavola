@@ -18,6 +18,10 @@ python3 oracle_clean_employees.py
 cd /home/gruppotavola/gruppotavola/src/oracle/
 python3 oracle_clean_guests.py
 
+# forecasting
+cd /home/gruppotavola/gruppotavola/src/forecast/
+python3 forecast.py
+
 # silver ingestion
 cd /home/gruppotavola/gruppotavola/src/silver/
 python3 silver.py

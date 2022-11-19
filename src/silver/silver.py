@@ -13,6 +13,7 @@ def read_files():
         Storage.bronze_oracle_employees,
         Storage.bronze_oracle_guests,
         Storage.bronze_ga,
+        Storage.bronze_forecast,
     ]
 
     datasets = []
