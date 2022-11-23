@@ -188,7 +188,7 @@ def day_period(df_in: pd.DataFrame) -> None:
             23: "Cena",
         })
 
-    df_in[Fields.shift_id] = df_in[Fields.ora_employee_id].str + "//" + df_in[Fields.period_of_day]
+    df_in[Fields.shift_id] = df_in[Fields.ora_employee_id].astype(str) + "//" + df_in[Fields.period_of_day]
 
     return df_in
 
