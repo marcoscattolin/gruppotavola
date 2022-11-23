@@ -161,7 +161,7 @@ def trunc_staging(bronze_df, staging_df):
 
 def day_period(df_in: pd.DataFrame) -> None:
 
-    df_in["period_of_day"] = df_in["check_close_datetime"].dt.hour.map({
+    df_in[Fields.period_of_day] = df_in["check_close_datetime"].dt.hour.map({
             0: "Cena",
             1: "Cena",
             2: "Cena",
@@ -187,6 +187,8 @@ def day_period(df_in: pd.DataFrame) -> None:
             22: "Cena",
             23: "Cena",
         })
+
+    df_in[Fields.shift_id] = df_in[Fields.ora_employee_id] + "//" + df_in[Fields.period_of_day]
 
     return df_in
 

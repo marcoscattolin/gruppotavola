@@ -65,6 +65,9 @@ class Fields:
 
     fcst_observation = "data_point_class"
 
+    period_of_day = "period_of_day"
+    shift_id = "shift_id"
+
 class Storage:
 
     # container names
