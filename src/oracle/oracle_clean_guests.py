@@ -1,7 +1,19 @@
 import pandas as pd
-from grptavutils import list_blob_files, read_parquet, read_csv, write_parquet, delete_blob_file, delete_staging_files
+from grptavutils import (
+    list_blob_files, read_parquet, read_csv, write_parquet,
+    delete_blob_file, delete_staging_files, read_excel
+
+)
 from grptavutils.constants import Fields, Storage
 from grptavutils.logs import logger
+
+
+def read_employee_hours():
+
+    df = read_excel(Storage.bronze, Storage.employee_hours)
+    df = df.drop(columns=[Fields.ora_employee_first_name, Fields.ora_employee_last_name])
+
+    return df
 
 def read_bronze():
     try:
@@ -192,6 +204,26 @@ def day_period(df_in: pd.DataFrame) -> None:
 
     return df_in
 
+def calc_productivity(df_in):
+
+    # read produtcivity data and make key
+    emp_df = read_employee_hours()
+    emp_df[Fields.shift_id] = emp_df[Fields.ora_employee_id].astype(str) + "//" + emp_df[Fields.period_of_day]
+    emp_df = emp_df[[Fields.shift_id, Fields.hours_per_week]]
+
+    # join and calculate productivity
+    df = df_in.merge(emp_df, on=Fields.shift_id, how="left")
+    df[Fields.productivity] = df[Fields.ora_check_total] / df[Fields.hours_per_week]
+
+    # fill missing
+    df[Fields.productivity] = df[Fields.productivity].fillna(0)
+    df[Fields.hours_per_week] = df[Fields.hours_per_week].fillna(0)
+
+    return df
+
+
+
+
 def main():
 
     # read bronze
@@ -211,6 +243,9 @@ def main():
 
     # make day period
     day_period(df)
+
+    df = calc_productivity(df)
+
 
     # write
     write_parquet(

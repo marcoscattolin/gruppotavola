@@ -57,6 +57,8 @@ class Fields:
     ora_check_tot_items = "check_tot_items"
     ora_error_correct_count = "error_correct_count"
     ora_is_employee_meal = "is_employee_meal"
+    productivity = "productivity"
+    hours_per_week = "hours_per_week"
 
     missing = "_missing_"
 
@@ -84,3 +86,4 @@ class Storage:
     silver_employees = "employees/employees.parquet"
     silver_items = "items/items.parquet"
     bronze_forecast = "forecast/forecast.parquet"
+    employee_hours = "external_uploads/employees_hours.xlsx"
