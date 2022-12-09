@@ -87,3 +87,5 @@ class Storage:
     silver_items = "items/items.parquet"
     bronze_forecast = "forecast/forecast.parquet"
     employee_hours = "external_uploads/employees_hours.xlsx"
+    future_reservations = "sevenrooms/future/"
+    yesterday_reservations = "sevenrooms/yesterday/"
