@@ -18,6 +18,11 @@ python3 oracle_clean_employees.py
 cd /home/gruppotavola/gruppotavola/src/oracle/
 python3 oracle_clean_guests.py
 
+# launch seven rooms
+cd /home/gruppotavola/gruppotavola/src/sevenrooms/
+python3 sevenrooms.py
+
+
 # forecasting
 cd /home/gruppotavola/gruppotavola/src/forecast/
 python3 forecast.py
