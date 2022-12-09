@@ -212,7 +212,11 @@ def calc_productivity(df_in):
     emp_df = emp_df[[Fields.shift_id, Fields.hours_per_week]]
 
     # join and calculate productivity
-    df = df_in.merge(emp_df, on=Fields.shift_id, how="left")
+    df = (
+        df_in
+        .drop(columns=Fields.hours_per_week)
+        .merge(emp_df, on=Fields.shift_id, how="left")
+    )
     df[Fields.productivity] = df[Fields.ora_check_total] / df[Fields.hours_per_week]
 
     # fill missing
