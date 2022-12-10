@@ -18,10 +18,16 @@ python3 oracle_clean_employees.py
 cd /home/gruppotavola/gruppotavola/src/oracle/
 python3 oracle_clean_guests.py
 
-# launch seven rooms
+# launch seven rooms email retrieval
 cd /home/gruppotavola/gruppotavola/src/sevenrooms/
 python3 sevenrooms.py
+
+# launch sevenrooms future reservations data cleaning
+cd /home/gruppotavola/gruppotavola/src/sevenrooms/
 python3 sevenrooms_clean_future.py
+
+# launch sevenrooms past reservations data cleaning
+cd /home/gruppotavola/gruppotavola/src/sevenrooms/
 python3 sevenrooms_clean_yesterday.py
 
 # forecasting
