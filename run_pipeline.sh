@@ -21,7 +21,8 @@ python3 oracle_clean_guests.py
 # launch seven rooms
 cd /home/gruppotavola/gruppotavola/src/sevenrooms/
 python3 sevenrooms.py
-
+python3 sevenrooms_clean_future.py
+python3 sevenrooms_clean_yesterday.py
 
 # forecasting
 cd /home/gruppotavola/gruppotavola/src/forecast/
