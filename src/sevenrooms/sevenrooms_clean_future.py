@@ -58,6 +58,9 @@ def read_staging():
     # fill missing
     df[Fields.booked_covers] = df[Fields.booked_covers].fillna(0)
 
+    # reference date for consistency with other datasets
+    df[Fields.date] = df[Fields.reservation_date]
+
     return df
 
 
