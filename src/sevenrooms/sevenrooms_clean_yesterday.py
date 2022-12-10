@@ -71,11 +71,11 @@ def read_staging():
     df = df[sel]
 
     # data types
-    df[Fields.created_date] = pd.to_datetime(df[Fields.created_date]).dt.date
+    df[Fields.created_date] = pd.to_datetime(df[Fields.created_date])
     df[Fields.created_time] = pd.to_datetime(df[Fields.created_time])
-    df[Fields.reservation_date] = pd.to_datetime(df[Fields.reservation_date]).dt.date
+    df[Fields.reservation_date] = pd.to_datetime(df[Fields.reservation_date])
 
-    df[Fields.update_date] = pd.to_datetime(df[Fields.update_date]).dt.date
+    df[Fields.update_date] = pd.to_datetime(df[Fields.update_date])
     df[Fields.update_time] = pd.to_datetime(df[Fields.update_time])
 
     # replace
@@ -115,7 +115,7 @@ def trunc_staging(bronze_df, staging_df):
 
     # susbet to before yesterday
     yesterday = datetime.date.today() - datetime.timedelta(1)
-    mask = df_out[Fields.reservation_date] <= yesterday
+    mask = df_out[Fields.reservation_date].dt.date <= yesterday
     df_out = df_out[mask]
 
     return df_out

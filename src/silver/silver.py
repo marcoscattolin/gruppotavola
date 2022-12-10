@@ -14,6 +14,8 @@ def read_files():
         Storage.bronze_oracle_guests,
         Storage.bronze_ga,
         Storage.bronze_forecast,
+        Storage.bronze_yesterday_reservations,
+        Storage.bronze_future_reservations,
     ]
 
     datasets = []
