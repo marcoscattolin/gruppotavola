@@ -1,3 +1,5 @@
+############## DEPRECATED -> use run_pipeline.sh to schedule scripts
+
 # crontab cronjobs.txt to schdule
 # set environment
 0 6 * * * export PYTHONPATH=/home/gruppotavola/gruppotavola/src
