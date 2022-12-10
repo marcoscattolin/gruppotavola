@@ -23,7 +23,7 @@ def login():
 
 def download_attachment(email_id):
 
-    _, data = mailbox.fetch(email_id, '(RFC822)' )
+    _, data = mailbox.fetch(email_id, '(RFC822)')
     raw_email = data[0][1]
 
     # converts byte literal to string removing b''
@@ -50,7 +50,7 @@ def download_attachment(email_id):
         if filename is not None:
             csv_data = BytesIO(part.get_payload(decode=True))
             df = pd.read_csv(csv_data)
-            write_parquet(dataframe=df, container=Storage.bronze, file_path=filename)
+            write_parquet(dataframe=df, container=Storage.staging, file_path=filename)
 
 def parse_uid(data):
     pattern_uid = re.compile(r"\d+ \(UID (?P<uid>\d+)\)")
