@@ -49,8 +49,11 @@ def download_attachment(email_id):
 
         if filename is not None:
             csv_data = BytesIO(part.get_payload(decode=True))
-            df = pd.read_csv(csv_data)
-            write_parquet(dataframe=df, container=Storage.staging, file_path=filename)
+            try:
+                df = pd.read_csv(csv_data)
+                write_parquet(dataframe=df, container=Storage.staging, file_path=filename)
+            except pd.errors.EmptyDataError:
+                return None
 
 def parse_uid(data):
     pattern_uid = re.compile(r"\d+ \(UID (?P<uid>\d+)\)")
