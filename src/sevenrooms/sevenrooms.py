@@ -4,7 +4,7 @@ import email
 import os
 import json
 from grptavutils.constants import Storage
-from grptavutils import write_parquet
+from grptavutils import write_parquet, logger
 import pandas as pd
 from io import BytesIO
 
@@ -74,8 +74,16 @@ if __name__ == "__main__":
     # per ognuna
     for msg in email_ids:
 
-        # scarica allegato
-        download_attachment(msg)
+        # scarica allegato, tentando per 5 volte
+        num_retries = 5
+        while num_retries > 0:
+            try:
+                download_attachment(msg)
+                num_retries = 0
+            except imaplib.IMAP4.error:
+                logger.warn(f"imap error, retrying, remaining attempts {num_retries}")
+                num_retries -= 1
+
 
         # copy into sevenrooms
         resp, data = mailbox.fetch(msg, "(UID)")
