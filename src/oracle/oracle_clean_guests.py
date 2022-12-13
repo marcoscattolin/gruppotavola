@@ -206,7 +206,7 @@ def day_period(df_in: pd.DataFrame) -> None:
 
 def calc_productivity(df_in):
 
-    # read produtcvity data and make key
+    # read productivity data and make key
     emp_df = read_employee_hours()
     emp_df[Fields.shift_id] = emp_df[Fields.ora_employee_id].astype(str) + "//" + emp_df[Fields.period_of_day]
     emp_df = emp_df[[Fields.shift_id, Fields.hours_per_week]]
