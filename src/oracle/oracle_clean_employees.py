@@ -263,6 +263,9 @@ def main():
     df = flag_wines(df)
     df = flag_menus(df)
 
+    # margin
+    df = calc_margin(df)
+
     # write
     write_parquet(
         dataframe=df,
