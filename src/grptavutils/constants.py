@@ -111,6 +111,8 @@ class Fields:
     prepayment_total = "prepayment_total"
     prepayment_onsite_gross_usd = "prepayment_onsite_gross_usd"
     prepayment_onsite_net_usd = "prepayment_onsite_net_usd"
+    menu_item_cost = "menu_item_cost"
+    margin = "margin"
 
 class Storage:
 
@@ -129,6 +131,7 @@ class Storage:
     silver_items = "items/items.parquet"
     bronze_forecast = "forecast/forecast.parquet"
     employee_hours = "external_uploads/employees_hours.xlsx"
+    item_cost = "external_uploads/item_cost.xlsx"
     future_reservations = "sevenrooms/future/"
     yesterday_reservations = "sevenrooms/yesterday/"
     bronze_yesterday_reservations = "sevenrooms/yesterday.parquet"

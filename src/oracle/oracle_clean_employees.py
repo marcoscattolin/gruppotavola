@@ -1,5 +1,5 @@
 import pandas as pd
-from grptavutils import list_blob_files, read_parquet, read_csv, write_parquet, delete_blob_file, delete_staging_files
+from grptavutils import list_blob_files, read_parquet, read_csv, write_parquet, delete_blob_file, delete_staging_files, read_excel
 from grptavutils.constants import Fields, Storage
 from grptavutils.logs import logger
 
@@ -212,6 +212,30 @@ def flag_menus(df_in: pd.DataFrame) -> pd.DataFrame:
     # merge back
     df = df_in.merge(sides_df, on="menu_item_id", how="left")
     df["menu_flag"] = df["menu_flag"].fillna(0)
+
+    return df
+
+
+def read_item_cost():
+
+    df = read_excel(Storage.bronze, Storage.item_cost)
+    df = df.drop(columns=[Fields.ora_family_group_name, Fields.ora_menu_item_name])
+
+    return df
+
+
+def calc_margin(df_in):
+
+    # read productivity data and make key
+    item_df = read_item_cost()
+    item_df = item_df[[Fields.ora_menu_item_id, Fields.menu_item_cost]]
+
+    # join and calculate margin
+    df = (
+        df_in
+        .merge(item_df, on=Fields.ora_menu_item_id, how="left")
+    )
+    df[Fields.margin] = df[Fields.sales_count] * df[Fields.menu_item_cost]
 
     return df
 
