@@ -113,6 +113,7 @@ class Fields:
     prepayment_onsite_net_usd = "prepayment_onsite_net_usd"
     menu_item_cost = "menu_item_cost"
     margin = "margin"
+    total_cost = "total_cost"
 
 class Storage:
 
