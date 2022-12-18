@@ -233,6 +233,7 @@ def calc_margin(df_in):
     # join and calculate margin
     df = (
         df_in
+        .drop(columns=[Fields.menu_item_cost])
         .merge(item_df, on=Fields.ora_menu_item_id, how="left")
     )
     df[Fields.total_cost] = df[Fields.ora_sales_count] * df[Fields.menu_item_cost]
