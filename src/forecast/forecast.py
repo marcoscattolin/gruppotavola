@@ -47,6 +47,12 @@ def make_forecast(df_in: pd.DataFrame):
     mask = forecast["ds"] > df["ds"].max()
     forecast.loc[mask, Fields.fcst_observation] = "forecast"
 
+    # force mondays to zero sales
+    mask = (forecast["ds"].dt.weekday == 0) & (forecast[Fields.fcst_observation] == "forecast")
+    forecast.loc[mask, "yhat"] = 0
+    forecast.loc[mask, "yhat_lower"] = 0
+    forecast.loc[mask, "yhat_upper"] = 0
+
     # rename columns
     forecast.rename(columns={"ds": Fields.date}, inplace=True)
 
