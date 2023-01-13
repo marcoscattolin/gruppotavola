@@ -16,6 +16,7 @@ def read_files():
         Storage.bronze_forecast,
         Storage.bronze_yesterday_reservations,
         Storage.bronze_future_reservations,
+        Storage.bronze_oracle_discounts,
     ]
 
     datasets = []
@@ -91,6 +92,33 @@ def combine_items(datasets):
     return items_df
 
 
+def combine_discounts(datasets):
+    # subset datasets to those having items data
+    discount_datasets = []
+    for d in datasets:
+        if Fields.ora_discount_id in d.columns:
+            discount_datasets.append(d)
+
+    # concat and drop duplicates
+    sel = [
+        Fields.ora_discount_daily_total_id, Fields.ora_revenue_center_id,
+        Fields.ora_discount_id, Fields.ora_discount_count,
+        Fields.ora_discount_gross_vat, Fields.ora_discount_num,
+        Fields.ora_discount_name, Fields.ora_discount_master_num, Fields.ora_discount_master_name,
+        Fields.ora_revenue_center_num, Fields.ora_revenue_center_name,
+        Fields.ora_revenue_center_master_num, Fields.ora_revenue_center_master_name,
+        Fields.ora_location_ref, Fields.ora_location_name,
+    ]
+    discounts_df = pd.concat(discount_datasets)
+    discounts_df = (
+        discounts_df[sel]
+        .sort_values(sel)
+        .drop_duplicates(subset=[Fields.ora_menu_item_id])
+    )
+
+    return discounts_df
+
+
 def main():
     # read parquet files
     datasets = read_files()
@@ -117,6 +145,14 @@ def main():
         dataframe=items_df,
         container=Storage.silver,
         file_path=Storage.silver_items,
+    )
+
+    # combine discounts
+    discount_df = combine_items(datasets)
+    write_parquet(
+        dataframe=discount_df,
+        container=Storage.silver,
+        file_path=Storage.silver_discount,
     )
 
 

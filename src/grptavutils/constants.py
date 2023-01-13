@@ -149,6 +149,7 @@ class Storage:
     silver_dates = "dates/dates.parquet"
     silver_employees = "employees/employees.parquet"
     silver_items = "items/items.parquet"
+    silver_discounts = "discounts/discounts.parquet"
     bronze_forecast = "forecast/forecast.parquet"
     employee_hours = "external_uploads/employees_hours.xlsx"
     item_cost = "external_uploads/item_cost.xlsx"
