@@ -115,6 +115,24 @@ class Fields:
     margin = "margin"
     total_cost = "total_cost"
 
+    # discounts
+    ora_discount_daily_total_id = "discount_daily_total_id"
+    ora_revenue_center_id = "revenue_center_id"
+    ora_discount_id = "discount_id"
+    ora_discount_count = "discount_count"
+    ora_discount_gross_vat = "discount_gross_vat"
+    ora_discount_num = "discount_num"
+    ora_discount_name = "discount_name"
+    ora_discount_master_num = "discount_master_num"
+    ora_discount_master_name = "discount_master_name"
+    ora_revenue_center_num = "revenue_center_num"
+    ora_revenue_center_name = "revenue_center_name"
+    ora_revenue_center_master_num = "revenue_center_master_num"
+    ora_revenue_center_master_name = "revenue_center_master_name"
+    ora_location_ref = "location_ref"
+    ora_location_name = "location_name"
+
+
 class Storage:
 
     # container names
@@ -127,6 +145,7 @@ class Storage:
     bronze_ga = "googleanalytics/googleanalytics.parquet"
     bronze_oracle_employees = "oracle/employees.parquet"
     bronze_oracle_guests = "oracle/guests.parquet"
+    bronze_oracle_discounts = "oracle/discounts.parquet"
     silver_dates = "dates/dates.parquet"
     silver_employees = "employees/employees.parquet"
     silver_items = "items/items.parquet"
