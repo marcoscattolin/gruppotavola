@@ -50,6 +50,7 @@ def read_bronze():
             Fields.ora_check_tot_items,
             Fields.ora_error_correct_count,
             Fields.ora_is_employee_meal,
+            Fields.hours_per_week,
         ])
 
         return empty_df
