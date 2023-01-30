@@ -36,6 +36,7 @@ def read_bronze():
             Fields.ora_sales_count,
             Fields.ora_sales_gross_before_discount,
             Fields.ora_discount_total,
+            Fields.menu_item_cost,
         ])
 
         return empty_df
