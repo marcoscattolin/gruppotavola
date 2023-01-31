@@ -223,7 +223,7 @@ def read_item_cost():
     df = df.drop(columns=[Fields.ora_family_group_name, Fields.ora_menu_item_name])
 
     # ensure no duplicates
-    df = df.drop_duplicates(subset=["menu_item_id"])
+    df = df.drop_duplicates(subset=[Fields.ora_menu_item_id])
 
     return df
 

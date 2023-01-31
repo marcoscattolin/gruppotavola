@@ -216,6 +216,9 @@ def calc_productivity(df_in):
     zero_hours = emp_df[Fields.hours_per_week] == 0
     emp_df.loc[zero_hours, Fields.hours_per_week] = None
 
+    # ensure no duplicates
+    emp_df = emp_df.drop_duplicates(subset=[Fields.shift_id])
+
     # join and calculate productivity
     df = (
         df_in
