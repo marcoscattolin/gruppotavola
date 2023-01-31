@@ -256,8 +256,11 @@ def main():
     # make day period
     day_period(df)
 
+    # calculate productivity
     df = calc_productivity(df)
 
+    # drop duplicates
+    df = df.drop_duplicates(subset=[Fields.ora_guest_check_id])
 
     # write
     write_parquet(
